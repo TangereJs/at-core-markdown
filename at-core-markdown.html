@@ -1,0 +1,65 @@
+<link rel="import" href="marked-import.html">
+
+<!--
+Element wrapper for the `marked` (http://marked.org/) library.
+
+@element at-core-markdown
+-->
+<dom-module id="at-core-markdown">
+
+  <template>
+    <div id="content"></div>
+  </template>
+
+</dom-module>
+
+<script>
+
+  'use strict';
+
+  Polymer({
+
+    is: 'at-core-markdown',
+
+    properties: {
+
+      text: {
+        type: String,
+        value: '',
+        observer: 'textChanged',
+        xtype: 'textarea'
+      }
+
+    },
+
+    ready: function() {
+      marked.setOptions({
+        highlight: this.highlight.bind(this)
+      });
+
+      if (!this.text) {
+        // Use the Markdown from the first `<script>` descendant whose MIME type starts with
+        // "text/markdown". Script elements beyond the first are ignored.
+        var markdownElement = Polymer.dom(this).querySelector('[type^="text/markdown"]');
+        if (markdownElement != null) {
+          this.text = markdownElement.textContent;
+        }
+      }
+    },
+
+    textChanged: function (newValue, oldValue) {
+      this.$.content.innerHTML = newValue ? marked(newValue) : '';
+    },
+
+    renderAsService: function(text) {
+      this.$.content.innerHTML = text ? marked(text) : '';
+    },
+
+    highlight: function(code, lang) {
+      var event = this.fire('marked-js-highlight', {code: code, lang: lang});
+      return event.detail.code || code;
+    }
+
+  });
+
+</script>
