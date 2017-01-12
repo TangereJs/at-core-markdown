@@ -15,8 +15,9 @@
     "wrapper"
   ],
   "dependencies": {
-    "marked": "~0.3.3",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "tangere": "TangereJs/tangere#0.8-preview",
+    "at-doc-viewer": "TangereJs/at-doc-viewer#0.8-preview",
+    "marked": "~0.3.3"
   },
   "main": "at-core-markdown.html",
   "repository": {
